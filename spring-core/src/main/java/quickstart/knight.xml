@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+创建应用组件之间协作的行为通常称为装配（wiring）
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd">
+               
+	<bean id="knight" class="quickstart.BraveKnight">
+		<!-- 使用构造器注入 Quest bean -->
+		<constructor-arg ref="quest" />
+	</bean>
+	
+	<bean id="quest" class="quickstart.SlayDragonQuest">
+		<constructor-arg value="#{T(System).out}" />
+	</bean>
+</beans>
