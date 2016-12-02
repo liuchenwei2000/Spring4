@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+SpEL 基本用法示例
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="walkman" class="wiring.adv.spel.Walkman">
+		<!-- SpEL 表示字面值，如浮点数、String 值以及 boolean 值  -->
+		<property name="name" value="#{'Sony'}" />
+		<property name="price" value="#{299.99}" />
+		<property name="available" value="#{true}" />
+		<property name="tape" ref="tape" />
+	</bean>
+
+	<bean id="tape" class="wiring.adv.spel.Tape">
+		<constructor-arg name="title" value="Hey Jude" />
+		<constructor-arg name="artist" value="The Beatles" />
+	</bean>
+
+	<bean id="information" class="wiring.adv.spel.Information">
+		<!-- SpEL 通过 id 引用其他的 bean（及其属性或方法）  -->
+		<!-- 引用 bean，注意这里使用的是 value 属性，而不再是 ref -->
+		<property name="bean1" value="#{walkman}" />
+		<property name="bean2" value="#{tape}" />
+		<!-- 引用 bean 的属性 -->
+		<property name="message1" value="#{walkman.name}" />
+		<property name="message2" value="#{tape.title}" />
+		<!-- 调用 bean 的方法 -->
+		<property name="message3" value="#{tape.toString()}" />
+		<!-- 调用 bean 的方法返回值的方法，链式调用 -->
+		<property name="message4" value="#{tape.toString().toLowerCase()}" />
+		<!--
+		调用 bean 的方法返回值的方法，使用 ?. 操作符可以防止返回值为 null 的情况
+		如果 tape.toString() 返回值是 null，则不会再调用 toLowerCase() 方法。
+		-->
+		<property name="message5" value="#{tape.toString()?.toLowerCase()}" />
+
+		<!--
+		SpEL 还可以在表达式中使用类型，比如访问类方法或类常量，
+		需要使用 T() 运算符，其返回结果是一个 Class 对象。
+		-->
+		<!-- 类常量 -->
+		<property name="message6" value="#{T(java.lang.Math).PI}" />
+		<!-- 类方法 -->
+		<property name="message7" value="#{T(java.lang.System).currentTimeMillis()}" />
+
+		<!--
+		SpEL 提供了多个运算符，可以用在表达式的值上，比如算术、比较、逻辑、条件运算符。
+		-->
+		<property name="message8" value="#{T(java.lang.Math).PI * 2}"/>
+		<property name="message9" value="#{walkman.price > 200 ?'Good one':'Just so so'}"/>
+
+		<!--
+		SpEL 提供对集合和数组的操作，可以使用 [] 运算符从集合或数组中按索引获取元素
+		-->
+		<property name="message10" value="#{'Hello World'[3]}"/>
+		<property name="message11" value="#{information.colors[2]}"/>
+		<property name="message12" value="#{information.dest[1]}"/>
+	</bean>
+</beans>
