@@ -24,7 +24,7 @@
                     <path>/spring-web</path>
                     <port>8080</port>
                     <uriEncoding>UTF-8</uriEncoding>
-                    <warSourceDirectory>${basedir}/target/SpringMVC-0.0.1-SNAPSHOT</warSourceDirectory>
+                    <warSourceDirectory>${basedir}/target/spring-web-0.0.1-SNAPSHOT</warSourceDirectory>
                 </configuration>
             </plugin>
         </plugins>
@@ -86,6 +86,18 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>

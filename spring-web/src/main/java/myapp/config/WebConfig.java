@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("myapp.web")// 启用组件扫描
+@ComponentScan("myapp.controller")// 启用组件扫描
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     /**
