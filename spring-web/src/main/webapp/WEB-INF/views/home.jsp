@@ -3,9 +3,21 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    %>
+    <base href="<%=basePath%>"/>
     <title>spring-web</title>
 </head>
-<body>Welcome to SpringMVC
+<body>
 <img src="resources/image/cross.jpg">
+Welcome to SpringMVC
+<p>
+    <a href="books">/books</a>
+<p>
+    <a href="users?total=3">/users?total=3</a>
+<p>
+    <a href="user/12345">/user/12345</a>
 </body>
 </html>

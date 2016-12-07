@@ -1,4 +1,4 @@
-## Spring 简介 ##
+## 构建 Spring Web 应用程序 ##
 
 Spring MVC 基于 模型-视图-控制器 模式实现的，能够帮助构建像 Spring 框架那样灵活和松耦合的 Web 应用程序。
 

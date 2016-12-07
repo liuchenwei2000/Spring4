@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * 定义类级别的请求处理
+ * 1，定义类级别的请求处理
  * <p>
  * <p>
  * Created by liuchenwei on 2016/12/6.
