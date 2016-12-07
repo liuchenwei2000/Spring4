@@ -71,8 +71,36 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
         registration.setLoadOnStartup(1);
         // 设置初始化参数
         registration.setInitParameter("myparam", "Hello");
-        // 设置对 multipart 的支持，将上传文件的临时存储目录设置在 "/tmp/uploads"
-        registration.setMultipartConfig(new MultipartConfigElement("/tmp/uploads"));
+
+        /*
+        * 处理 multipart 形式的数据
+        *
+        * 2，配置 multipart 解析器
+        *
+        * 设置对 multipart 的支持，并设定其他参数值，主要如下：
+        *
+        * location
+        * 上传文件的临时存储目录，指定的是文件系统中的一个绝对目录；
+        *
+        * maxFileSize
+        * 上传文件的最大容量（字节为单位），默认没有限制；
+        *
+        * maxRequestSize
+        * 整个 multipart 请求的最大容量（字节为单位），不会关系有多少 part 以及每个 part 的大小，默认没有限制；
+        *
+        * fileSizeThreshold
+        * 在上传过程中，文件大小的最大容量（字节为单位），达到该容量则将写入到临时目录。默认值为 0，即所有上传文件都写入到磁盘。
+        *
+        * 如果使用传统的 web.xml 来配置 MultipartConfigElement，详见 web.xml 文件示例。
+        */
+
+        // 将上传文件的临时存储目录设置在 "/tmp/uploads"
+//        registration.setMultipartConfig(new MultipartConfigElement("/tmp/uploads"));
+
+        // 将上传文件的临时存储目录设置在 "/tmp/uploads"，
+        // 同时限制文件大小不超过 2MB，整个请求不超过 4MB，所有文件都要写入磁盘
+        registration.setMultipartConfig(new MultipartConfigElement(
+                "/tmp/uploads", 2 * 1024 * 1024, 4 * 1024 * 1024, 0));
     }
 
     /**
