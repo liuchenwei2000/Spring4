@@ -15,4 +15,6 @@ public interface UserRepository {
     List<User> getUsers(int count);
 
     User find(String id);
+
+    String save(User user);
 }

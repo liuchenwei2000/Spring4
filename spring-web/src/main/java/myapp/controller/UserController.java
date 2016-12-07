@@ -5,11 +5,13 @@ import myapp.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -56,5 +58,46 @@ public class UserController {
         User user = userRepository.find(userid);
         model.addAttribute("user", user);
         return "user";
+    }
+
+    /**
+     * User 注册表单请求
+     */
+    @RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String registerForm() {
+        return "registerForm";
+    }
+
+    /**
+     * 表单参数（Form Parameter）示例方法
+     * <p>
+     * 处理 User 注册请求
+     */
+    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    // 方法接受一个 User 对象作为参数，这个对象的属性将会使用请求中同名的参数自动填充
+    public String register(User user) {
+        // 当处理表单的 POST 请求时，控制器需要接受表单数据并将表单数据保存为 User 对象。
+        String id  = userRepository.save(user);
+
+        // 同时为了防止重复提交，应该将浏览器重定向到新创建 User 的基本信息页。
+        // 当 InternalResourceViewResolver 看到视图格式中的 "redirect:"前缀时，
+        // 会自动将其解析为重定向的规则，而不是视图的名称。除了 "redirect:"，还有 "forward:" 前缀。
+        return "redirect:/user/" + id;
+    }
+
+    /**
+     * 带有表单校验功能的方法示例
+     */
+    @RequestMapping(value = "/user/register2", method = RequestMethod.POST)
+    // @Valid 注解用来告知 Spring 需要确保这个对象满足校验限制
+    // 在 User 属性上添加校验限制并不能阻止表单提交，如果有校验出现错误的话，
+    // 可以通过 Errors 对象进行访问，Errors 对象将作为本方法的参数。
+    // Errors 参数要紧跟在 @Valid 注解的参数后面。
+    public String register2(@Valid User user, Errors errors) {
+        if (errors.hasErrors()) {
+            return "registerForm";// 如果校验出现错误，则重新返回注册表单
+        }
+        String id = userRepository.save(user);
+        return "redirect:/user/" + id;
     }
 }
