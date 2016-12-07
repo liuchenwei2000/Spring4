@@ -27,9 +27,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public ViewResolver viewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
+        resolver.setPrefix("/WEB-INF/views/");// 前缀
+        resolver.setSuffix(".jsp");// 后缀
         resolver.setExposeContextBeansAsAttributes(true);
+        // home 将会解析为 /WEB-INF/views/home.jsp
+        // books/detail 将会解析为 /WEB-INF/views/books/detail.jsp
+        // 当逻辑视图名中包含斜线时，这个斜线也会带到资源的路径名中。
         return resolver;
     }
 

@@ -1,6 +1,12 @@
 package myapp.config;
 
+import myapp.DispatcherServletFilter1;
+import myapp.DispatcherServletFilter2;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration;
 
 /**
  * 使用 Java 配置 DispatcherServlet
@@ -44,5 +50,36 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{WebConfig.class};
+    }
+
+    /**
+     * Spring MVC 配置的替代方案
+     *
+     * 1，自定义 DispatcherServlet 配置
+     *
+     * 继承 AbstractAnnotationConfigDispatcherServletInitializer 除了必须实现的三个方法外，
+     * 还有很多其他方法可以进行重载，从而实现额外的配置，比如 customizeRegistration() 方法。
+     *
+     * 在 AbstractAnnotationConfigDispatcherServletInitializer 将
+     * DispatcherServlet 注册到 Servlet 容器中之后，就会调用本方法，
+     * 并将 Servlet 注册后得到的 ServletRegistration.Dynamic 对象传递进来。
+     * 通过重载本方法，可以对 DispatcherServlet 进行额外的配置。如下：
+     */
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        // 设置 load-on-startup 优先级
+        registration.setLoadOnStartup(1);
+        // 设置初始化参数
+        registration.setInitParameter("myparam", "Hello");
+        // 设置对 multipart 的支持，将上传文件的临时存储目录设置在 "/tmp/uploads"
+        registration.setMultipartConfig(new MultipartConfigElement("/tmp/uploads"));
+    }
+
+    /**
+     * 本方法返回的 Filter 将只会映射到 DispatcherServlet 上，而不会影响其他 Servlet。
+     */
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[]{new DispatcherServletFilter1(), new DispatcherServletFilter2()};
     }
 }
