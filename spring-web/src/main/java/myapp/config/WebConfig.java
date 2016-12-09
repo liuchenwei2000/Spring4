@@ -1,5 +1,6 @@
 package myapp.config;
 
+import myapp.WebConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -81,7 +82,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MultipartResolver multipartResolver2() throws IOException {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setUploadTempDir(new FileSystemResource("/tmp/uploads"));
+        multipartResolver.setUploadTempDir(new FileSystemResource(WebConstant.TEMP_DIR));
         multipartResolver.setMaxUploadSize(2 * 1024 * 1024);
         multipartResolver.setMaxInMemorySize(0);
         return multipartResolver;

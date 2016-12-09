@@ -18,7 +18,7 @@ public class MyRequestListener implements ServletRequestListener {
 	public void requestInitialized(ServletRequestEvent arg0) {
 		System.out.println("request initialized...");
 	}
-	
+
 	@Override
 	public void requestDestroyed(ServletRequestEvent arg0) {
 		System.out.println("request destroyed...");

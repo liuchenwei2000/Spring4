@@ -7,6 +7,9 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
+import java.io.File;
+
+import static myapp.WebConstant.TEMP_DIR;
 
 /**
  * 使用 Java 配置 DispatcherServlet
@@ -95,12 +98,19 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
         */
 
         // 将上传文件的临时存储目录设置在 "/tmp/uploads"
-//        registration.setMultipartConfig(new MultipartConfigElement("/tmp/uploads"));
+//        registration.setMultipartConfig(new MultipartConfigElement(TEMP_DIR));
 
         // 将上传文件的临时存储目录设置在 "/tmp/uploads"，
         // 同时限制文件大小不超过 2MB，整个请求不超过 4MB，所有文件都要写入磁盘
         registration.setMultipartConfig(new MultipartConfigElement(
-                "/tmp/uploads", 2 * 1024 * 1024, 4 * 1024 * 1024, 0));
+                TEMP_DIR, 2 * 1024 * 1024, 4 * 1024 * 1024, 0));
+
+        // 确保临时文件夹创建
+        File tempDir = new File(TEMP_DIR);
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
+            System.out.println(tempDir.getAbsolutePath() + " has been created.");
+        }
     }
 
     /**

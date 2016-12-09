@@ -21,5 +21,7 @@ Welcome to SpringMVC
     <a href="user/12345">/user/12345</a>
 <p>
     <a href="user/register">/user/register</a>
+<p>
+    <a href="contact/register">/contact/register</a>
 </body>
 </html>
