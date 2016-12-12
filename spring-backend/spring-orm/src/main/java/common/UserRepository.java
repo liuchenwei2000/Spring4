@@ -1,4 +1,4 @@
-package hibernate;
+package common;
 
 /**
  * User Repository 接口

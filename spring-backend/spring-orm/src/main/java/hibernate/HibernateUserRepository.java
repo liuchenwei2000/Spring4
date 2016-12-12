@@ -1,5 +1,7 @@
 package hibernate;
 
+import common.User;
+import common.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package hibernate;
+package common;
 
 /**
  * POJO
