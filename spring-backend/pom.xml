@@ -4,7 +4,14 @@
     <groupId>liuchenwei</groupId>
     <artifactId>spring-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
+	<packaging>pom</packaging>
+	
+	<modules>
+        <module>spring-jdbc</module>
+        <module>spring-orm</module>
+		<module>spring-nosql</module>
+    </modules>
+	
     <build>
         <plugins>
             <plugin>
@@ -31,7 +38,7 @@
     </build>
 
     <properties>
-        <spring.version>4.3.3.RELEASE</spring.version>
+        <spring.version>4.3.4.RELEASE</spring.version>
     </properties>
 
     <dependencies>

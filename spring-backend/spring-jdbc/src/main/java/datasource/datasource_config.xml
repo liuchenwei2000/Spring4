@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+使用 XML 文件的方式配置数据源示例
+-->
+
+<!--
+1，使用 JNDI 数据源
+
+Spring 应用程序经常部署在一个 JavaEE 应用服务器中（如 WebSphere），
+这些服务器允许你配置为通过 JNDI 获取数据源。
+这样做的好处是数据源可以在应用程序之外进行管理，应用程序只需在访问数据库时查找数据源即可。
+
+可以通过使用 jee 命名空间下的 <jee:jndi-lookup> 元素简化数据源配置。
+它可以用于检索 JNDI 中的任何对象（包括数据源）并将其作为 Spring 的 Bean。
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+               http://www.springframework.org/schema/jee
+               http://www.springframework.org/schema/jee/spring-jee-4.0.xsd ">
+
+	<!--
+    属性 jndiName 用于指定 JNDI 里数据源的名称。
+    如果只设置了jndiName 属性，那数据源就直接由它的值指定；
+    但如果程序是运行在 JavaEE 应用服务器里，还需要把 resourceRef 属性设置为 true，
+    这意味着 jndiName 的值会被加上 java:comp/env/ 前缀。
+    -->
+	<jee:jndi-lookup id="dataSource1" jndi-name="/jdbc/MyDatasource" resource-ref="true"/>
+
+
+	<!--
+	2，使用数据源连接池
+
+	本例选用的数据源连接池是 commons-DBCP，BasicDataSource 是最常用的一个提供池功能的数据源。
+	-->
+	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/test"/>
+		<property name="username" value="root"/>
+		<property name="password" value="123456"/>
+		<property name="initialSize" value="5"/>
+		<property name="maxActive" value="10"/>
+	</bean>
+
+	<!--
+	3，基于 JDBC 驱动的数据源
+
+	Spring 提供了三个基于 JDBC 的数据源：
+	DriverManagerDataSource：在每个连接请求时都会返回一个新建的连接，并没有进行池化管理。
+	SimpleDriverDataSource：与 DriverManagerDataSource 类似，但它直接使用 JDBC 驱动来解决在特定环境下的类加载问题。
+	SingleConnectionDataSource：在每个连接请求时都返回同一个连接，可以看作是只有一个连接的池。
+	-->
+	<bean id="dataSource3" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/test" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+	</bean>
+</beans>         
