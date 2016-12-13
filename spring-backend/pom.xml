@@ -10,6 +10,7 @@
         <module>spring-jdbc</module>
         <module>spring-orm</module>
 		<module>spring-nosql</module>
+		<module>spring-cache</module>
     </modules>
 	
     <build>
@@ -60,7 +61,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
         </dependency>
     </dependencies>
 </project>

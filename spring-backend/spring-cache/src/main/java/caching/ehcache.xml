@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EhCache 配置文件 -->
+<ehcache>
+    <cache name="bookCache"
+           maxElementsInMemory="10"
+           maxBytesLocalHeap="50m"
+           timeToIdleSeconds="100"
+           timeToLiveSeconds="100"
+           overflowToDisk="false">
+    </cache>
+</ehcache>

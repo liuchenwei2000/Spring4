@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+使用 XML 文件的方式启用注解驱动的缓存
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/cache
+                http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<!-- 启用缓存 -->
+	<cache:annotation-driven/>
+	<!-- 声明缓存管理器 -->
+	<bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager"/>
+</beans>
