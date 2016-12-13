@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.io.Serializable;
 
 /**
- * 基于 Hibernate 实现的 Book Repository
+ * 基于 Hibernate 实现的 User Repository
  * <p>
  *     最佳实现不再是使用 HibernateTemplate，而是使用上下文 Session。
  *     通过这种方式，会直接将 Hibernate SessionFactory 注入到

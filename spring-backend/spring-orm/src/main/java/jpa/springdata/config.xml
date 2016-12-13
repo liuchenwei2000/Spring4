@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+使用 XML 文件的方式配置 Spring Data JPA
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xsi:schemaLocation="http://www.springframework.org/schema/data/jpa
+               http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
+
+	<!--
+	配置自动扫描的基础包，以便查找扩展自 Spring Data JPA Repository 接口的所有接口。
+	一旦发现这样的接口，它会自动生成（在应用启动的时候）这个接口的实现。
+	-->
+	<jpa:repositories base-package="jpa.springdata" />
+</beans>

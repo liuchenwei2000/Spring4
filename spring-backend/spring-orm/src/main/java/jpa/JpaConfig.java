@@ -8,6 +8,7 @@ import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
+import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
@@ -95,5 +96,12 @@ public class JpaConfig {
         JndiObjectFactoryBean jofb = new JndiObjectFactoryBean();
         jofb.setJndiName("jdbc/userDS");// 设置 jndi 名称
         return jofb;
+    }
+
+    /**
+     * 注册 PersistenceAnnotationBeanPostProcessor 以便 Spring 理解 JPA 的注解。
+     */
+    public PersistenceAnnotationBeanPostProcessor paPostProcessor() {
+        return new PersistenceAnnotationBeanPostProcessor();
     }
 }
