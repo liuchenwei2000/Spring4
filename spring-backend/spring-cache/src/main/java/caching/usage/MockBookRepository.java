@@ -75,7 +75,55 @@ public class MockBookRepository implements BookRepository{
         return book;
     }
 
-    @CacheEvict(value = CachingConfig.CACHE_NAME, condition = "")
+    /**
+     * 条件化缓存
+     * <p>
+     *     @Cacheable 和 @CachePut 提供了两个属性用于实现条件化缓存：
+     *     unless 和 condition，它们都接受一个 SpEL 表达式。
+     *     如果 unless 属性的 SpEL 表达式计算结果为 true 则缓存方法返回的数据就不会放到缓存中。
+     *     如果 condition 属性的 SpEL 表达式计算结果为 false 则这个方法缓存将会被禁用。
+     * <p>
+     *     unless 属性只能阻止将对象放入缓存，但是在方法被调用的时候，依然会去缓存中进行查找，
+     *     如果找到了匹配的值，就会返回这个值。与之不同的是，如果 condition 属性的表达式结果为 false，
+     *     那么在这个方法调用的过程中，缓存是被禁用的，就是说，不会去缓存中查找，同时返回值也不会放进缓存中。
+     */
+    @Cacheable(value = CachingConfig.CACHE_NAME,
+            unless = "#result.title.contains('Java')")
+    // 假设对于 title 属性包含 Java 的 Book 对象，不想对其进行缓存
+    public Book findByAuthor(String author) {
+        System.out.println("...findByAuthor(String)...");
+        Book book = new Book();
+        book.setId("23426");
+        book.setTitle("Hello Java");
+        book.setAuthor(author);
+        return book;
+    }
+
+    @Cacheable(value = CachingConfig.CACHE_NAME,
+            condition = "not #title.contains('Spring')")
+    // 假设对于 title 属性包含 Spring 的 Book 对象，想要对其禁用缓存
+    public Book findByTitle(String title) {
+        System.out.println("...findByTitle(String)...");
+        Book book = new Book();
+        book.setId("98375");
+        book.setTitle(title);
+        return book;
+    }
+
+    /**
+     * 移除缓存条目
+     * <p>
+     *     当缓存之不再合法时，就应该确保将其从缓存中移除，这样才能
+     *     保证后续的缓存命中不会返回旧的或者已经不存在的值。
+     * <p>
+     *     @CacheEvict 注解的方法被调用的时候，会有一个或多个条目会在缓存中移除。
+     *     @CacheEvict 注解可以应用在返回值为 void 的方法上，
+     *     因为它只是将条目从缓存中移除，因此可以放在任意的方法上，包括 void 方法。
+     *     另外，它还具有和 @Cacheable、@CachePut 一样的 key、condition 两个属性。
+     */
+    @CacheEvict(CachingConfig.CACHE_NAME)
+    // 当删除指定 id 的 Book 对象时，需要同时将其在缓存中移除
+    // 默认情况下，被删除条目的 key 与传递进来的 id 参数想等
     public void delete(String id) {
         System.out.println("...delete(String)...");
         System.out.println("Book id=" + id + " has been deleted.");

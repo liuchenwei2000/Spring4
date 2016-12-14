@@ -17,9 +17,13 @@ public interface BookRepository {
     @Cacheable(CachingConfig.CACHE_NAME)
     Book findOne(String id);
 
-    @CachePut(value=CachingConfig.CACHE_NAME, key="#book.id")
+    Book findByAuthor(String author);
+
+    Book findByTitle(String title);
+
+    @CachePut(value = CachingConfig.CACHE_NAME, key = "#book.id")
     Book save(Book book);
 
-    @CacheEvict(value=CachingConfig.CACHE_NAME,condition="")
+    @CacheEvict(CachingConfig.CACHE_NAME)
     void delete(String id);
 }

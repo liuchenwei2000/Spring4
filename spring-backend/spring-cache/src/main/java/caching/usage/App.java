@@ -22,6 +22,8 @@ public class App {
     @Test
     public void test(){
         String id = "54321";
+        String author = "Tom Hanks";
+        String title = "Hello Spring";
 
         System.out.println("invoke findOne " + id + " 1st");
         bookRepository.findOne(id);
@@ -36,6 +38,24 @@ public class App {
         Book book = bookRepository.save(new Book("Thinking in Java", "Bruce Eckel"));
 
         System.out.println("invoke findOne " + book.getId() + " 1st");
+        bookRepository.findOne(book.getId());
+
+        System.out.println("invoke findByAuthor " + author + " 1st");
+        bookRepository.findByAuthor(author);
+
+        System.out.println("invoke findByAuthor " + author + " 2nd");
+        bookRepository.findByAuthor(author);
+
+        System.out.println("invoke findByTitle " + title + " 1st");
+        bookRepository.findByTitle(title);
+
+        System.out.println("invoke findByTitle " + title + " 2nd");
+        bookRepository.findByTitle(title);
+
+        System.out.println("invoke delete " + book.getId());
+        bookRepository.delete(book.getId());
+
+        System.out.println("invoke findOne " + book.getId() + " after delete");
         bookRepository.findOne(book.getId());
     }
 }
