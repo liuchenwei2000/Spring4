@@ -4,7 +4,17 @@
     <groupId>liuchenwei</groupId>
     <artifactId>spring-integration</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-
+	<packaging>pom</packaging>
+	
+	<modules>
+        <module>spring-remote</module>
+        <module>spring-rest</module>
+		<module>spring-message</module>
+		<module>spring-email</module>
+		<module>spring-jmx</module>
+		<module>spring-boot</module>
+    </modules>
+	
     <build>
         <plugins>
             <plugin>
@@ -31,7 +41,7 @@
     </build>
 
     <properties>
-        <spring.version>4.3.3.RELEASE</spring.version>
+        <spring.version>4.3.4.RELEASE</spring.version>
     </properties>
 
     <dependencies>
@@ -53,7 +63,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
         </dependency>
     </dependencies>
 </project>
