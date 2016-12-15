@@ -1,4 +1,4 @@
-package rest;
+package rest.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

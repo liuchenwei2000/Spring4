@@ -1,6 +1,7 @@
-package rest;
+package rest.dao;
 
 import org.springframework.stereotype.Repository;
+import rest.bean.Book;
 
 import java.util.ArrayList;
 import java.util.List;
