@@ -27,4 +27,9 @@ public class BookRepository {
         books.add(new Book("38765", "Hello Android", "Unknown"));
         return books;
     }
+
+    public Book save(Book book) {
+        book.setId("88776");
+        return book;
+    }
 }
