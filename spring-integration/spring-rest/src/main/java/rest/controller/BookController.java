@@ -30,15 +30,16 @@ public class BookController {
 	 * 控制器完成了它的工作之后，资源才会被转化成最适合客户端的形式。
 	 * 详见 关于表述.md
 	 */
-	@RequestMapping(value = "/book", method = RequestMethod.GET)
-	public Book book(@RequestParam("id") String id) {
+	@RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Book book(@PathVariable String id) {
 		return bookRepository.findOne(id);
 	}
 
 	/**
 	 * 如果使用了消息转换功能的话，需要告诉 Spring 跳过正常的模型/视图流程，
 	 * 并使用消息转换器，最简单的方式是为控制器方法添加 @ResponseBody 注解。
-	 * <p>
+	 * <p>2
 	 * @ResponseBody 注解会告知 Spring 要返回的对象作为资源发送给客户端，
 	 * 并将其转换为客户端可接受的表述形式，具体来说，DispatcherServlet 将会考虑到请求中
 	 * Accept 头信息，并查找能够为客户端提供所需表述形式的消息转换器。

@@ -7,7 +7,6 @@
 	<packaging>pom</packaging>
 	
 	<modules>
-        <module>spring-remote</module>
         <module>spring-rest</module>
 		<module>spring-message</module>
 		<module>spring-email</module>

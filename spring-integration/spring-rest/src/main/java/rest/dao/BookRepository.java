@@ -17,6 +17,9 @@ import java.util.List;
 public class BookRepository {
 
     public Book findOne(String id) {
+        if (id == null || id.trim().length() == 0) {
+            return null;
+        }
         return new Book(id, "Spring in Action", "Craig Walls");
     }
 
