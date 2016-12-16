@@ -1,6 +1,7 @@
 package rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -78,5 +79,27 @@ public class BookController {
 	@ResponseBody
 	public Book addBook(@RequestBody Book book) {
 		return bookRepository.save(book);
+	}
+
+	/**
+	 * 使用 DELETE 删除资源
+	 */
+	@RequestMapping(value = "/book/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String deleteBook(@PathVariable String id) {
+		System.out.println("Book [" + id + "] has been deleted.");
+		return id + " has been deleted.";
+	}
+
+	/**
+	 * 使用 PUT 更新资源
+	 * <p>
+	 * GET 请求将资源的状态从服务器转移到客户端，而 PUT 将资源的状态从客户端转移到服务器上。
+	 */
+	@RequestMapping(value = "/book/{id}", method = RequestMethod.PUT)
+	// 本例将响应状态设置为 HTTP 状态码 204，即请求被成功处理了，但响应体中不包含任何返回信息。
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateBook(@PathVariable String id, @RequestBody Book book) {
+		System.out.println(book);
+		System.out.println("Book [" + id + "] has been updated.");
 	}
 }

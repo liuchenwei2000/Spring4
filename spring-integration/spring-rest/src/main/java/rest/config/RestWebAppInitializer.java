@@ -24,5 +24,4 @@ public class RestWebAppInitializer extends AbstractAnnotationConfigDispatcherSer
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{WebConfig.class};
     }
-
 }
