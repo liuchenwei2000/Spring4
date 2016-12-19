@@ -91,6 +91,15 @@ public class BookController {
 	}
 
 	/**
+	 * 使用 POST 新建资源
+	 */
+	@RequestMapping(value = "/book", method = RequestMethod.POST)
+	@ResponseBody
+	public Book addBook2(@RequestBody Book book) {
+		return bookRepository.save(book);
+	}
+
+	/**
 	 * 使用 PUT 更新资源
 	 * <p>
 	 * GET 请求将资源的状态从服务器转移到客户端，而 PUT 将资源的状态从客户端转移到服务器上。

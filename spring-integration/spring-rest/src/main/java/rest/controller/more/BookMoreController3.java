@@ -3,7 +3,6 @@ package rest.controller.more;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,8 +33,7 @@ public class BookMoreController3 {
 	 * 另外，当创建新资源的时候，将资源的 URL 放在响应的 Location
 	 * 头部信息中并返回给客户端是一种很好的方式。
 	 */
-	@RequestMapping(value = "/book", method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/book", method = RequestMethod.POST)
 	public ResponseEntity<Book> addBook(@RequestBody Book book, UriComponentsBuilder ucb) {
 		book = bookRepository.save(book);
 
