@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 使用 amq 命名空间进行配置 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context.xsd
+               http://activemq.apache.org/schema/core
+               http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <context:component-scan base-package="jms.template" />
+
+    <!-- JMS 连接工厂 -->
+    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616" />
+
+    <!-- 声明 ActiveMQ 消息目的地，不管是哪种类型，都是使用 physicalName 属性指定消息通道的名称。 -->
+    <amq:topic id="topicDestination" physicalName="hello.topic" />
+    <amq:queue id="queueDestination" physicalName="hello.queue" />
+
+    <!-- 消息发送者客户端 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="queueDestination" />
+    </bean>
+
+</beans>

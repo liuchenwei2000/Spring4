@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/context
+               http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="jms.template" />
+
+    <!-- 配置 JMS 连接工厂 -->
+    <bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <!-- 指定代理的 URL -->
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
+    <!-- 声明 ActiveMQ 消息目的地，目的地可以是一个主题(Topic)也可以是一个队列(Queue) -->
+    <bean id="topicDestination"  class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="hello.topic"/>
+    </bean>
+
+    <bean id="queueDestination"  class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="hello.queue"/>
+    </bean>
+
+    <!-- 消息发送者客户端 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <!--
+        设置默认的目的地
+
+        如果已经存在该名称的队列或主题，就会使用已有的；否则将会创建一个新的目的地（通常会是队列）。
+        -->
+        <!-- <property name="defaultDestinationName" value="hello.queue" /> -->
+
+        <!-- 如果想指定要创建的目的地类型的话，可以将之前创建的队列或主题目的地装配进来。 -->
+        <property name="defaultDestination" ref="queueDestination" />
+    </bean>
+
+</beans>
