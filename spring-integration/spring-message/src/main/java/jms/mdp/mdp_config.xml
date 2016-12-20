@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/jms
+               http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <!-- 为 POJO 赋予消息接收能力的诀窍是在 Spring 中把它配置为消息监听器 -->
+
+    <bean id="bookMessageHandler" class="jms.mdp.BookMessageHandler"/>
+
+    <!--
+    消息监听器容器（listener container）是一个特殊的 bean，它可以监控 JMS 目的地并等待消息到达。
+    一旦有消息到达，它取出消息，然后把消息传给任意一个对此消息感兴趣的消息监听器。
+    可以在消息监听器容器中配置一个或多个消息监听器。
+    -->
+    <jms:listener-container connection-factory="connectionFactory">
+        <!--
+        消息监听器（listener）可以像下面一样进行配置，用于标识一个 bean 和一个可以处理消息的方法。
+        当消息到达 hello.queue 队列（由 destination 属性指定）时，bookMessageHandler bean 的
+        handleBookMessage()（由 method 属性指定）方法会被触发。
+        -->
+        <jms:listener destination="hello.queue" ref="bookMessageHandler" method="handleBookMessage"/>
+    </jms:listener-container>
+
+    <bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
+    <bean id="queueDestination"  class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="hello.queue"/>
+    </bean>
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="queueDestination" />
+    </bean>
+</beans>

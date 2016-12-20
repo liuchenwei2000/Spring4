@@ -15,7 +15,7 @@ import javax.jms.TextMessage;
  * <p>
  *     使用 JmsTemplate 接收消息只需要调用其 receive() 方法即可。
  *     JmsTemplate 会尝试从消息代理中获取一个消息，如果没有可用的消息，
- *     receive() 方法会一直等待，直到获得消息为止。
+ *     receive() 方法会一直等待，直到获得消息为止（或者超时）。
  * <p>
  * Created by liuchenwei on 2016/12/20.
  */
