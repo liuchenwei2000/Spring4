@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+使用 Spring AMQP 所提供的 rabbit 配置命名空间，并且将其作为首选的命名空间，
+将 beans 作为第二位的命名空间，这样的话，rabbit 元素就能够避免使用前缀了。
+-->
+<beans:beans xmlns="http://www.springframework.org/schema/rabbit"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+	    http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 配置 RabbitMQ 连接工厂 -->
+    <connection-factory id="connectionFactory"
+                        host="localhost"
+                        port="5672"
+                        username="admin"
+                        password="admin"/>
+
+    <!--
+    Spring AMQP 的 rabbit 命名空间包含了多个元素，用来创建队列、Exchange 以及将它们结合在一起的 binding。
+    如下：
+    <queue> 创建一个队列
+    <fanout-exchange> 创建一个 fanout 类型的 Exchange
+    <header-exchange> 创建一个 header 类型的 Exchange
+    <direct-exchange> 创建一个 direct 类型的 Exchange
+    <topic-exchange> 创建一个 topic 类型的 Exchange
+    <bindings> 定义一个或多个 <binding> 元素的集合
+    <binding> 创建 Exchange 和队列之间的 binding
+
+    这些配置元素要与 <admin> 元素一起使用。<admin> 元素会创建一个 RabbitMQ 管理组件，
+    它会自动创建（如果它们在 RabbitMQ 代理中尚未存在的话）上述元素所声明的队列、Exchange 以及 binding。
+    -->
+    <admin connection-factory="connectionFactory"/>
+
+    <!--
+    创建一个 queue，并将其绑定在一个 Exchange 上，实际上这实现了 JMS 的点对点模型。
+    -->
+    <queue id="bookQueue" name="book.queue"/>
+
+    <fanout-exchange name="book.exchange">
+        <bindings>
+            <binding queue="book.queue"/>
+        </bindings>
+    </fanout-exchange>
+
+    <!-- 如果要将消息路由到多个队列中，而不管 routing key 是什么，可以采用如下方式： -->
+    <queue name="alert.queue.1"/>
+    <queue name="alert.queue.2"/>
+
+    <fanout-exchange name="alert.exchange">
+        <bindings>
+            <binding queue="alert.queue.1"/>
+            <binding queue="alert.queue.2"/>
+        </bindings>
+    </fanout-exchange>
+
+</beans:beans>
