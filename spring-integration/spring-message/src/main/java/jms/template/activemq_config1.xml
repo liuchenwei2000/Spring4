@@ -24,8 +24,8 @@
         <constructor-arg value="hello.queue"/>
     </bean>
 
-    <!-- 消息发送者客户端 -->
-    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <!-- JmsTemplate bean -->
+    <bean id="jmsTemplate1" class="org.springframework.jms.core.JmsTemplate">
         <property name="connectionFactory" ref="connectionFactory" />
         <!--
         设置默认的目的地
@@ -38,4 +38,16 @@
         <property name="defaultDestination" ref="queueDestination" />
     </bean>
 
+    <!-- JmsTemplate bean，使用自定义的 messageConverter  -->
+    <bean id="jmsTemplate2" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="defaultDestination" ref="queueDestination" />
+        <!-- 设置 JmsTemplate 默认使用的 messageConverter -->
+        <property name="messageConverter" ref="messageConverter" />
+    </bean>
+
+    <!-- 声明 MessageConverter bean，各个消息转换器可能会有额外的配置，从而实现转换过程的细粒度控制。 -->
+    <bean id="messageConverter" class="org.springframework.jms.support.converter.MappingJackson2MessageConverter">
+        <property name="typeIdPropertyName" value="JMSType" />
+    </bean>
 </beans>
