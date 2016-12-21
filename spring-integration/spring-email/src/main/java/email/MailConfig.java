@@ -1,5 +1,8 @@
 package email;
 
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.VelocityException;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -7,10 +10,15 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import org.springframework.ui.velocity.VelocityEngineFactory;
 
 import javax.mail.Session;
 import javax.naming.NamingException;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * 配置 Spring 发送邮件
@@ -24,7 +32,7 @@ import javax.naming.NamingException;
  */
 @Configuration
 @ComponentScan
-@PropertySource("classpath:email/mail.properties")// 保存邮件服务器信息的外部属性文件
+@PropertySource("classpath:config/mail.properties")// 保存邮件服务器信息的外部属性文件
 public class MailConfig {
 
     /**
@@ -34,7 +42,7 @@ public class MailConfig {
      *     这样就能在 Spring 之外管理邮件服务器的配置（比如在属性文件中）。
      */
     @Bean
-    public MailSender mailSender(Environment env){
+    public JavaMailSender mailSender(Environment env){
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         // 设置邮件服务器主机名
         mailSender.setHost(env.getProperty("mail.host"));
@@ -64,5 +72,33 @@ public class MailConfig {
         JndiTemplate template = new JndiTemplate();
         Session session = (Session) template.lookup("java:comp/mail/session");
         return session;
+    }
+
+    /**
+     * 配置 VelocityEngine
+     * <p>
+     *     从 Spring4 开始，Velocity 不再被推荐为主要的模板技术。
+     */
+    @Bean
+    public VelocityEngine velocityEngine() throws VelocityException, IOException {
+        VelocityEngineFactory factory = new VelocityEngineFactory();
+
+        // 配置为从类路径下加载 velocity 模板
+        Properties props = new Properties();
+        props.put("resource.loader", "class");
+        props.put("class.resource.loader.class", ClasspathResourceLoader.class.getName());
+
+        factory.setVelocityProperties(props);
+        return factory.createVelocityEngine();
+    }
+
+    /**
+     * 配置 FreeMarker
+     */
+    @Bean
+    public FreeMarkerConfigurationFactoryBean freeMarkerConfiguration() {
+        FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
+        bean.setTemplateLoaderPath("/templates/");
+        return bean;
     }
 }
