@@ -9,7 +9,7 @@
 
     <!-- 为 POJO 赋予消息接收能力的诀窍是在 Spring 中把它配置为消息监听器 -->
 
-    <bean id="bookMessageHandler" class="jms.mdp.BookMessageHandler"/>
+    <bean id="bookMessageHandler" class="common.BookMessageHandler"/>
 
     <!--
     消息监听器容器（listener container）是一个特殊的 bean，它可以监控 JMS 目的地并等待消息到达。

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+定义消息驱动的 AMQP POJO
+
+仍然使用 jms.mdp.BookMessageHandler 这个 POJO 作为消息处理器，之所以重用这个
+POJO 是因为它不依赖于 JMS 或 AMQP，不管是以什么机制传递进来的 Book 对象，它都能够处理。
+-->
+<beans:beans xmlns="http://www.springframework.org/schema/rabbit"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+	    http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 声明处理消息的 POJO -->
+    <beans:bean id="bookMessageHandler" class="common.BookMessageHandler"/>
+
+    <!-- 配置消息监听器容器和监听器 -->
+    <listener-container connection-factory="connectionFactory">
+        <!--
+        指定作为监听器的 bean 以及处理消息的方法签名，跟 JMS MDP 相关配置类似。
+        还可以通过 queue-names 属性来指定要监听的队列，允许设置多个队列的名称，用逗号分隔。
+        -->
+        <listener ref="bookMessageHandler" method="handleBookMessage" queue-names="book.queue"/>
+    </listener-container>
+
+    <template id="rabbitTemplate" connection-factory="connectionFactory"
+              exchange="book.exchange" routing-key="book.queue" queue="book.queue" />
+
+    <connection-factory id="connectionFactory"
+                        host="localhost"
+                        port="5672"
+                        username="guest"
+                        password="guest"/>
+
+    <admin connection-factory="connectionFactory"/>
+
+    <queue id="bookQueue" name="book.queue"/>
+
+    <fanout-exchange name="book.exchange">
+        <bindings>
+            <binding queue="book.queue"/>
+        </bindings>
+    </fanout-exchange>
+
+</beans:beans>

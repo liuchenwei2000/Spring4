@@ -38,7 +38,7 @@ public class App {
         });
 
         System.out.println("Messages have been sended.");
-        TimeUnit.SECONDS.sleep(5);
+        TimeUnit.SECONDS.sleep(1);
 
         context.close();
     }
