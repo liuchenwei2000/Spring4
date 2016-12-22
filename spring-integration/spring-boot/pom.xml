@@ -5,10 +5,51 @@
     <artifactId>spring-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot</name>
-	
+
+    <!-- 构建为 JAR 文件 -->
+    <packaging>jar</packaging>
+
+    <!--
+    继承自 Spring Boot Starter parent，这样就能受益于 Maven 的依赖管理功能，
+    对于项目中的很多依赖，就没有必要明确声明版本号，直接从 parent 中继承得到。
+    -->
     <parent>
-        <groupId>liuchenwei</groupId>
-        <artifactId>spring-integration</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.2.RELEASE</version>
     </parent>
+
+    <!-- 使用 spring-boot 的 maven 插件构建 JAR 文件 -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- 使用 SpringMVC 来开发 Web 层 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- 使用 Thymeleaf 创建视图 -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+        </dependency>
+        <!-- 使用 JDBC 持久化数据，JDBC Starter 会将 Spring JdbcTemplate 需要的所有内容都引入进来 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <!-- 使用 MySQL 数据库，这里是其驱动 jar -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+    </dependencies>
 </project>

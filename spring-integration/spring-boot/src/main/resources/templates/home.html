@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Spring Boot Demo</title>
+    <!--
+    添加静态内容
+
+    当采用 Spring Boot 的 Web 自动配置来定义 Spring MVC bean 时，
+    这些 bean 中会包含一个资源处理器（resource handler），它会将 /** 映射到几个资源路径中、
+    这些资源路径包括（相对于类路径的根）：
+    /META-INF/resources
+    /resources
+    /static
+    /public
+
+    在传统的 Web 项目中通常会将静态内容放在 src/main/webapp 目录下，这样在生成的 WAR 文件里面，
+    这些内容就会位于 WAR 文件的根目录下。如果使用 Spring Boot 构建 WAR 文件的话，这依然是可选的方案。
+    但是，也可以将静态内容放在资源处理器所映射的上述四个路径下，本例使用了 /public 路径。
+    -->
+    <link rel="stylesheet" th:href="@{/style.css}" />
+  </head>
+
+  <body>
+    <h2>Spring Boot Books</h2>
+    <ul th:each="book : ${books}">
+      <li>
+        <span th:text="${book.author}">Author</span> :
+        <span th:text="${book.name}">Name</span>
+      </li>
+    </ul>
+  </body>
+</html>
