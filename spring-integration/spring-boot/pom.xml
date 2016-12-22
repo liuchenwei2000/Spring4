@@ -50,6 +50,24 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <!--
+        使用 Spring Boot Actuator 来为基于 Spring Boot 的应用添加多个管理功能。如下：
 
+        GET	/autoconfig	    描述了 Spring Boot 在使用自动配置的时候所作出的决策
+        GET	/beans          列出运行应用所配置的 bean
+        GET	/configprops    列出应用中能够用来配置 bean 的所有属性及其当前值
+        GET	/dump           列出应用的线程，包括每个线程的栈跟踪信息
+        GET	/env            列出应用上下文中所有可用的环境和系统属性变量
+        GET	/env/{name}     展现某个特定环境变量或系统变量的值
+        GET	/health         展现当前应用的健康情况
+        GET	/info           展现应用特定的信息
+        GET	/mappings       展现所有 URL 映射
+        POST/shutdown       强制关闭应用
+        GET	/trace          列出应用最近请求相关的元数据，包括请求和响应头
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator</artifactId>
+        </dependency>
     </dependencies>
 </project>
