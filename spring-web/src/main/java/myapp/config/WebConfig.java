@@ -1,6 +1,8 @@
 package myapp.config;
 
 import myapp.WebConstant;
+import myapp.interceptor.BaseUrlInterceptor;
+import myapp.interceptor.TimeCostInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -51,6 +54,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 要求 DispatcherServlet 将对静态资源的请求转发到 Servlet 容器中默认的 servlet 上，
         // 而不是使用 DispatcherServlet 本身来处理此类请求。
         configurer.enable();
+    }
+
+    /**
+     * 添加 Interceptor 拦截器
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 设置拦截器匹配的模式
+        registry.addInterceptor(new BaseUrlInterceptor()).addPathPatterns("/**");
+        // 设置拦截器匹配的模式及排除的模式（可以指定多个）
+        registry.addInterceptor(new TimeCostInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/", "/js/**", "/css/**", "/images/**");
     }
 
     /**
