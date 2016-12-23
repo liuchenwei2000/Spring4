@@ -17,7 +17,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * Created by liuchenwei on 2016/12/6.
  */
 @Configuration
-// 自动扫描非 Web 组件
+// 自动扫描非 Web 组件，比如 @Repository 等组件，
+// 扫描的过程还可以继续加载其他配置类，比如 myapp.jdbc.JdbcConfig。
 @ComponentScan(basePackages = {"myapp"}, excludeFilters = {
         @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
 })
