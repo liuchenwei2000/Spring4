@@ -1,8 +1,11 @@
 package myapp.config;
 
+import org.apache.commons.io.filefilter.EmptyFileFilter;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -19,4 +22,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
 })
 public class RootConfig {
+
+    /**
+     * 可以配置一些应用后端会用到的 bean，这些 bean 可能来自于第三方 JAR。
+     */
+    @Bean
+    public IOFileFilter fileFilter(){
+        System.out.println("fileFilter()");
+        return EmptyFileFilter.EMPTY;
+    }
 }
