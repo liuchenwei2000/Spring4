@@ -10,7 +10,7 @@
         <module>spring-rest</module>
 		<module>spring-message</module>
 		<module>spring-email</module>
-		<module>spring-jmx</module>
+		<module>spring-remote</module>
 		<module>spring-boot</module>
     </modules>
 	

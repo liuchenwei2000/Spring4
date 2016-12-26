@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>liuchenwei</groupId>
-    <artifactId>spring-jmx</artifactId>
+    <artifactId>spring-remote</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-jmx</name>
+    <name>spring-remote</name>
 	
     <parent>
         <groupId>liuchenwei</groupId>
