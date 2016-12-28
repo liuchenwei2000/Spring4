@@ -1,6 +1,6 @@
 package jaxws.client;
 
-import common.BookService;
+import jaxws.BookServiceWS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * 模拟 Hessian 客户端
+ * 模拟 JAX-WS 客户端
  * <p>
  * <p>
  * Created by liuchenwei on 2016/12/26.
@@ -20,12 +20,12 @@ import static org.junit.Assert.assertNotNull;
 public class BookServiceJaxWsClient {
 
     @Autowired
-    private BookService bookJaxWsService;
+    private BookServiceWS bookServiceWs;
 
     @Test
     public void test() {
-        assertNotNull(bookJaxWsService);
-        System.out.println(bookJaxWsService);
-        System.out.println(bookJaxWsService.findById("A0001"));
+        assertNotNull(bookServiceWs);
+        System.out.println(bookServiceWs);
+        System.out.println(bookServiceWs.getBookById("A0001"));
     }
 }

@@ -1,6 +1,6 @@
 package jaxws.client;
 
-import common.BookService;
+import jaxws.BookServiceWS;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Hessian 客户端配置类
+ * JAX-WS 客户端配置类
  * <p>
- *     在客户端代码中，基于 RMI 的服务于基于 Hessian 的服务之间唯一的差别在于
- *     要使用 HessianProxyFactoryBean 来代替 RmiProxyFactoryBean。
- *     Burlap 和 HttpInvoker 与 Hessian 的配置方式类似。
  * <p>
  * Created by liuchenwei on 2016/12/26.
  */
@@ -23,16 +20,21 @@ import java.net.URL;
 public class AppConfig {
 
     /**
-     * 装配 Hessian 服务
+     * 装配 JAX-WS 服务
      */
     @Bean
     public JaxWsPortProxyFactoryBean bookJaxWsService() throws MalformedURLException {
+        // 使用 JaxWsPortProxyFactoryBean 可以在 Spring 中装配 JAX-WS 服务
+        // 它能生成一个知道如何与 SOAP WebService 交互的代理，代理实现了服务接口。
         JaxWsPortProxyFactoryBean proxy = new JaxWsPortProxyFactoryBean();
-        proxy.setWsdlDocumentUrl(new URL("http://localhost:8888/services/BookService?wsdl"));
-        proxy.setServiceName("BookService");
-        proxy.setPortName("BookServiceEndpointPort");
-        proxy.setServiceInterface(BookService.class);
-        proxy.setNamespaceUri("http://server.jaxws/");
+        // 设置 JAX-WS 服务定义文件的地址
+        proxy.setWsdlDocumentUrl(new URL("http://localhost:8888/services/BookServiceWs?wsdl"));
+        // 设置其他一些必要信息，这些信息都可以通过上面的 WSDL 文件获知
+        proxy.setServiceName("BookServiceWs");
+        proxy.setPortName("BookServiceWsEndpointPort");
+        proxy.setNamespaceUri("http://bookstore.com");
+        // 设置代理实现的接口
+        proxy.setServiceInterface(BookServiceWS.class);
         return proxy;
     }
 }
