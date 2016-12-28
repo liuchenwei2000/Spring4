@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * Created by liuchenwei on 2016/12/27.
  */
 @Configuration
-@ComponentScan(basePackages = {"httprpc.server"}, excludeFilters = {
+@ComponentScan(basePackages = {"httprpc.server", "jaxws.server"}, excludeFilters = {
         @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
 })
 public class RootConfig {

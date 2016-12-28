@@ -11,4 +11,6 @@ public interface BookRepository {
     Book find(String id);
 
     void save(Book book);
+
+    boolean delete(String id);
 }
