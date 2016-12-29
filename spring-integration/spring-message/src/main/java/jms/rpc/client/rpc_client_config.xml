@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+    在客户端使用 JmsInvokerProxyFactoryBean 来访问 RPC 服务，它隐藏了访问远程服务的细节，
+    并提供一个易用的接口，通过该接口客户端与远程服务进行交互。
+    -->
+    <bean id="alertService" class="org.springframework.jms.remoting.JmsInvokerProxyFactoryBean">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="queueName" value="rpc.queue"/>
+        <property name="serviceInterface" value="jms.rpc.AlertService" />
+    </bean>
+
+    <bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+</beans>
