@@ -12,6 +12,7 @@
 		<module>spring-email</module>
 		<module>spring-remote</module>
 		<module>spring-boot</module>
+		<module>spring-security</module>
     </modules>
 	
     <build>
