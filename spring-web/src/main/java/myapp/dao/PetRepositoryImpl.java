@@ -3,7 +3,7 @@ package myapp.dao;
 import myapp.bean.Pet;
 import myapp.controller.exception.DuplicationException;
 import myapp.controller.exception.PetAlreadyRemovedException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Pet DAO 实现类
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * Created by liuchenwei on 2016/12/9.
  */
-@Component
+@Repository
 public class PetRepositoryImpl implements PetRepository {
 
     @Override

@@ -2,11 +2,13 @@ package myapp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -40,11 +42,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 配置如何通过拦截器保护请求
+     * <p>
+     *     在任何应用中，并不是所有的请求都需要同等程度地保护。有些请求需要认证，而另一些可能并不需要。
+     *     有些请求可能只有具备特定权限的用户才能访问，没有这些权限的用户则无法访问。
+     *     对每个请求进行细粒度安全性控制的关键在于重载 configure(HttpSecurity) 方法。
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
+
         // 上面默认的配置实际上等同于如下代码
+//        configHttpDefault(http);
+
+        // 对请求进行自定义的拦截配置
+        configHttpCustom(http);
+
+    }
+
+    /**
+     * Spring Security 对 HTTP 安全默认的配置方式
+     */
+    private void configHttpDefault(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().authenticated()// 所有应用的 HTTP 请求都要进行认证
                 .and()
@@ -53,8 +71,50 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();// 支持 HTTP Basic 方式的认证
     }
 
-    @Autowired
-    private DataSource dataSource;
+    /**
+     * 自定义对 HTTP 请求的拦截方式
+     */
+    private void configHttpCustom(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        http.authorizeRequests()
+                // 对 "/employee/me" 路径的请求进行认证，authenticated() 要求在执行该请求时必须已经登录。
+                // 如果用户没有认证的话，Spring Security 的 Filter 将会捕获该请求，并将用户重定向到登录页面。
+                .antMatchers("/employee/me").authenticated()
+
+                // 对 "/employee/save" 路径的 POST 请求进行认证并具备 ROLE_ADMIN 权限
+                .antMatchers(HttpMethod.POST,"/employee/save").hasRole("ADMIN")
+
+                // antMatchers() 方法中设定的路径支持 Ant 风格的通配符，可以使用通配符来指定路径。
+//                .antMatchers("/employee/**").authenticated()
+
+                // 可以在 antMatchers() 方法中指定多个路径
+//                .antMatchers("/employee/**", "/employee/mine").authenticated()
+
+                // regexMatchers() 方法能够接受正则表达式来定义请求路径
+//                .regexMatchers("/employee/.*").authenticated()
+
+                // 对其他所有的请求（如对主页的 GET 请求）都是允许的，permitAll() 方法允许请求没有任何的安全限制
+                .anyRequest().permitAll()
+
+                // 除了 authenticated() 和 permitAll() 以外，还有其他的一些方法能够用来定义该如何保护请求
+                // anonymous()：允许匿名用户访问
+                // denyAll()：无条件拒绝所有访问
+                // hasRole(String)：如果用户具备给定角色的话就允许访问
+                // hasAnyRole(String...)：如果用户具备给定角色中的某一个的话就允许访问
+                // hasIpAddress(String)：如果请求来自给定 IP 的话就允许访问
+
+                .and()
+                .formLogin()
+                .and()
+                .httpBasic();
+
+        /*
+        * 可以将任意数量的 antMatchers()、regexMatchers() 和 anyRequest() 连接起来，
+        * 以满足 Web 应用安全规则的需要。但是这些规则会按照给定的顺序发挥作用。
+        * 所以，要将最为具体的请求路径放在前面，而最不具体的路径（如 anyRequest()）放在后面。
+        * 如果不这样做的话，那不具体的路径配置将会覆盖掉更为具体的路径配置。
+        */
+    }
 
     /**
      * 配置查询用户详细信息（user-detail） 服务
@@ -68,7 +128,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // AuthenticationManagerBuilder 有多个方法可以用来配置 Spring Security 对认证的支持：
 
-        /** 1，使用基于内存的用户存储 */
+//        configAuthMemory(auth);
+//        configAuthDatabase(auth);
+        configAuthCustomUserService(auth);
+    }
+
+    /**
+     * 1，使用基于内存的用户存储
+     */
+    private void configAuthMemory(AuthenticationManagerBuilder auth) throws Exception {
         // 比如 inMemoryAuthentication() 方法可以启用、配置并任意填充基于内存的用户存储。
         auth.inMemoryAuthentication()
                 // 为内存用户存储添加用户、配置密码并为其授予一个或多个角色权限
@@ -82,13 +150,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // accountExpired(boolean):定义账号是否已经过期
         // accountLocked(boolean):定义账号是否已经锁定
         // disabled(boolean):定义账号是否已被禁用
+    }
 
-        /**
-         * 2，基于数据库表进行认证
-         *
-         * 对于调试和开发测试而言，基于内存的用户存储时很有用的，但是对于生产级别的应用而言，
-         * 用户数据通常会存储在关系数据库中，并通过 JDBC 进行访问。
-         */
+    @Autowired
+    private DataSource dataSource;
+
+    /**
+     * 2，基于数据库表进行认证
+     * <p>
+     * 对于调试和开发测试而言，基于内存的用户存储时很有用的，但是对于生产级别的应用而言，
+     * 用户数据通常会存储在关系数据库中，并通过 JDBC 进行访问。
+     */
+    private void configAuthDatabase(AuthenticationManagerBuilder auth) throws Exception {
         // 使用 jdbcAuthentication() 方法可以启用、配置基于数据库的用户存储
         auth.jdbcAuthentication().dataSource(dataSource)
                 // 如果应用程序的数据库与 Spring Security 默认的库表结构不一致，则可以通过下面的方式配置自己的查询
@@ -107,5 +180,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 不管使用哪一个密码转码器，都要理解数据库中的密码是永远不会解码的。
                 // 与之相反的是，用户在登录时输入的密码会按照相同的算法进行转码，然后在与数据库中已经转码过的密码进行对比。
         ;
+    }
+
+    @Autowired
+    private UserDetailsService userDetailsServiceImpl;
+
+    /**
+     * 3，配置自定义的用户服务
+     * <p>
+     * 需要认证的用户存储在非关系型数据库中，如 Redis 等，
+     * 这种情况下需要提供一个自定义的 UserDetailService 接口实现。
+     */
+    private void configAuthCustomUserService(AuthenticationManagerBuilder auth) throws Exception {
+        // 配置使用自定义的用户存储
+        auth.userDetailsService(userDetailsServiceImpl);
     }
 }

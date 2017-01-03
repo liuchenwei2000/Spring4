@@ -1,7 +1,7 @@
 package myapp.dao;
 
 import myapp.bean.User;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * Created by liuchenwei on 2016/12/6.
  */
-@Component
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     // 模拟保存时使用的实例
