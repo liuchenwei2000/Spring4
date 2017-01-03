@@ -32,7 +32,7 @@ import java.util.Properties;
  */
 @Configuration
 @ComponentScan
-@PropertySource("classpath:config/mail.properties")// 保存邮件服务器信息的外部属性文件
+@PropertySource("classpath:myapp/config/mail.properties")// 保存邮件服务器信息的外部属性文件
 public class MailConfig {
 
     /**

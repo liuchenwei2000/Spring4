@@ -8,7 +8,7 @@
                http://www.springframework.org/schema/context
                http://www.springframework.org/schema/context/spring-context-4.0.xsd">
                
-	<context:property-placeholder location="classpath:/config/mail.properties" />
+	<context:property-placeholder location="classpath:/myapp/config/mail.properties" />
 
 	<!--
 	在配置文件中使用 JavaMailSenderImpl，为其配置所需要的属性:

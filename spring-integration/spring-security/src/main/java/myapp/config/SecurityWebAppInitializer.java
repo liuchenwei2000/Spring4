@@ -1,4 +1,4 @@
-package config;
+package myapp.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
@@ -11,7 +11,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
  *     Filter 实现类，这个实现类会作为一个 bean 注册在 Spring 应用的上下文中。
  * <p>
  *     传统 web.xml 方式配置 DelegatingFilterProxy 可见 WEB-INF/web.xml，
- *     本类实现了借助 JavaConfig 的方式进行配置，即继承  AbstractSecurityWebApplicationInitializer。
+ *     本类实现了借助 JavaConfig 的方式进行配置，即继承 AbstractSecurityWebApplicationInitializer。
  *     后者实现了 WebApplicationInitializer，因此 Spring 会自动发现它并用它在 Web 容器中
  *     注册 DelegatingFilterProxy。不管采用哪种方式配置 DelegatingFilterProxy，
  *     它都会拦截发往应用中的请求，并将请求委托给 id 为 springSecurityFilterChain 的 bean。
@@ -24,7 +24,4 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
  * Created by liuchenwei on 2016/12/29.
  */
 public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationInitializer {
-
-
-
 }

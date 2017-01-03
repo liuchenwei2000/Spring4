@@ -18,3 +18,5 @@ Spring Security 被分为 11 个模块，如下：
 	Remoting(spring-security-remoting)		提供了对 Spring Remoting 的支持
 	标签库(spring-security-taglibs)			Spring Security 的 JSP 标签库
 	Web(spring-security-web)				提供了基于 Filter 的 Web 安全性支持。
+
+对于一般的 Web 应用程序，至少要包含 Core、Config 和 Web 这三个模块。详见 pom.xml。
