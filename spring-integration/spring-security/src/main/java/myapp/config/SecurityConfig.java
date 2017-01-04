@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .anyRequest().authenticated()// 所有应用的 HTTP 请求都要进行认证
                 .and()
-                .formLogin()// 支持基于表单的登录
+                .formLogin()// 支持基于表单的登录，启用默认的登录页
                 .and()
                 .httpBasic();// 支持 HTTP Basic 方式的认证
     }
