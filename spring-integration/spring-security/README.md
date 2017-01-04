@@ -20,3 +20,13 @@ Spring Security 被分为 11 个模块，如下：
 	Web(spring-security-web)				提供了基于 Filter 的 Web 安全性支持。
 
 对于一般的 Web 应用程序，至少要包含 Core、Config 和 Web 这三个模块。详见 pom.xml。
+
+### 防止跨站请求伪造
+
+跨站请求伪造（cross-site request forgery，CSRF），简单来讲，如果一个站点欺骗用户提交请求到其他服务器的话，就会发生 CSRF 攻击，这可能会带来消极的后果。
+
+从 Spring Security 3.2 开始，默认就会启用 CSRF 保护。实际上，除非采取行为处理 CSRF 防护或者将这个功能禁用，否则的话，在应用提交表单时可能会遇到问题。
+
+Spring Security 通过一个同步 token 的方式来实现 CSRF 防护的功能。它将会拦截状态变化的请求（非 GET、HEAD、OPTIONS 和 TRACE 的请求）并检查 CSRF token。如果请求中不包含 CSRF token 的话，或者 token 不能与服务器端的 token 相匹配，请求将会失败，并抛出 CsrfException 异常。
+
+这意味着在应用中，所有的表单必须在一个 "_csrf" 域中提交 token，而且这个 token 必须要与服务器端计算并存储的 token 一致，这样的话当表单提交的时候，才能进行匹配。详见 WEB-INF/views/form.jsp。

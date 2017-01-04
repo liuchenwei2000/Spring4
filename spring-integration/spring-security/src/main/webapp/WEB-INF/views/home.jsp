@@ -12,8 +12,8 @@
 <body>
 Welcome here.
 <p>
-<a href="employee/me">/employee/me</a>
+    <a href="employee/me">/employee/me</a>
 <p>
-    <a href="employee">/employee</a>
+    <a href="employee/register">/employee/register</a>
 </body>
 </html>

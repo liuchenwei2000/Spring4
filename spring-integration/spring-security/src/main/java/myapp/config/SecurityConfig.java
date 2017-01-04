@@ -75,7 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 自定义对 HTTP 请求的拦截方式
      */
     private void configHttpCustom(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        // 禁用 CSRF 防护功能
+//        http.csrf().disable();
         http.authorizeRequests()
                 // 对 "/employee/me" 路径的请求进行认证，authenticated() 要求在执行该请求时必须已经登录。
                 // 如果用户没有认证的话，Spring Security 的 Filter 将会捕获该请求，并将用户重定向到登录页面。
@@ -103,17 +104,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // hasAnyRole(String...)：如果用户具备给定角色中的某一个的话就允许访问
                 // hasIpAddress(String)：如果请求来自给定 IP 的话就允许访问
 
+                /*
+                * 可以将任意数量的 antMatchers()、regexMatchers() 和 anyRequest() 连接起来，
+                * 以满足 Web 应用安全规则的需要。但是这些规则会按照给定的顺序发挥作用。
+                * 所以，要将最为具体的请求路径放在前面，而最不具体的路径（如 anyRequest()）放在后面。
+                * 如果不这样做的话，那不具体的路径配置将会覆盖掉更为具体的路径配置。
+                */
+
+                .and()
+                /*
+                * 通过 HTTP 发送的数据没有经过加密，黑客就有机会拦截请求并且能够看到隐秘数据，
+                * 这就是为什么敏感信息要通过 HTTPS 来加密发送的原因。
+                * 借助 requiresChannel() 方法能够为各种 URL 模式声明所要求的通道。
+                *
+                * 本例中只要是对 "/employee/register" 的请求，Spring Security 都视为
+                * 需要安全通道（requiresChannel()确定的）并自动将请求重定向到 HTTPS 上。
+                */
+                .requiresChannel()
+                .antMatchers("/employee/register").requiresSecure()
+                // 有些页面并不需要通过 HTTPS 传送（如首页），可以使用 requiresInsecure()
+                // 代替 requiresSecure() 方法将首页声明为始终通过 HTTP 传送。
+                .antMatchers("/", "/index", "/home").requiresInsecure()
+
                 .and()
                 .formLogin()
                 .and()
                 .httpBasic();
-
-        /*
-        * 可以将任意数量的 antMatchers()、regexMatchers() 和 anyRequest() 连接起来，
-        * 以满足 Web 应用安全规则的需要。但是这些规则会按照给定的顺序发挥作用。
-        * 所以，要将最为具体的请求路径放在前面，而最不具体的路径（如 anyRequest()）放在后面。
-        * 如果不这样做的话，那不具体的路径配置将会覆盖掉更为具体的路径配置。
-        */
     }
 
     /**

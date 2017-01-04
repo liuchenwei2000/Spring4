@@ -12,5 +12,7 @@ public interface EmployeeRepository {
 
     Employee findByUsername(String username);
 
+    Employee findById(String id);
+
     String save(Employee employee);
 }

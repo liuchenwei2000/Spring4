@@ -32,6 +32,16 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         return npJdbcTemplate.queryForObject(sql, parameters, new EmployeeRowMapper());
     }
 
+    @Override
+    public Employee findById(String id) {
+        String sql = "select id, code, name, password, dept, salary from myapp_employee where id=:id";
+
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("id", id);
+
+        return npJdbcTemplate.queryForObject(sql, parameters, new EmployeeRowMapper());
+    }
+
     public String save(Employee employee) {
         String sql = "insert into myapp_employee( id, code, name, password, dept, salary) " +
                 " values(:id,:code,:name,:password,:dept,:salary)";

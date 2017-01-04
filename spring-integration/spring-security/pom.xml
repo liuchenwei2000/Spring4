@@ -31,6 +31,12 @@
                 <configuration>
                     <path>/spring-security</path>
                     <port>8080</port>
+
+                    <!-- 下面三项是配置 tomcat7-maven-plugin 插件对 HTTPS 的支持 -->
+                    <httpsPort>8443</httpsPort>
+                    <keystoreFile>D:/AppServer/tomcat.keystore</keystoreFile>
+                    <keystorePass>123456</keystorePass>
+
                     <uriEncoding>UTF-8</uriEncoding>
                     <warSourceDirectory>${basedir}/target/spring-security-0.0.1-SNAPSHOT</warSourceDirectory>
                 </configuration>
