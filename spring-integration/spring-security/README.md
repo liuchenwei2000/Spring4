@@ -30,3 +30,9 @@ Spring Security 被分为 11 个模块，如下：
 Spring Security 通过一个同步 token 的方式来实现 CSRF 防护的功能。它将会拦截状态变化的请求（非 GET、HEAD、OPTIONS 和 TRACE 的请求）并检查 CSRF token。如果请求中不包含 CSRF token 的话，或者 token 不能与服务器端的 token 相匹配，请求将会失败，并抛出 CsrfException 异常。
 
 这意味着在应用中，所有的表单必须在一个 "_csrf" 域中提交 token，而且这个 token 必须要与服务器端计算并存储的 token 一致，这样的话当表单提交的时候，才能进行匹配。详见 WEB-INF/views/form.jsp。
+
+### 保护视图
+
+当为浏览器渲染 HTML 内容时，可能希望视图中能够反映安全限制和相关的信息。一个简单的样例就是渲染用户的基本信息（比如显示"您已经以 *** 身份登录"），或者想根据用户被授予了什么权限，有条件地渲染特定的视图元素。
+
+Spring Security 提供了一个 JSP 标签库，在视图层上支持安全性。详见 WEB-INF/views/employee.jsp。
