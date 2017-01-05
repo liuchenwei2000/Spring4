@@ -127,8 +127,56 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/index", "/home").requiresInsecure()
 
                 .and()
-                .formLogin()
+
+                /*
+                * 登录
+                *
+                * 使用 loginPage() 方法添加自定义的登录页，参数实际上是 URL 模式，
+                * 可以由负责处理它的控制器返回登录页的逻辑视图名，参见 myapp.controller.LoginController
+                */
+                .formLogin().loginPage("/login")
+
                 .and()
+
+                /*
+                * 启用 Remember-me 功能
+                *
+                * 对于用户而言，只要登录过一次，应用就应该能记住，当再次回到应用的时候就不需要再登录了。
+                * 可以使用 rememberMe() 启用这个功能，默认情况下，这是通过在 cookie 中存储一个 token 完成的。
+                * 这个 token 最多两周内有效，但是本例中指定了它一周内有效（60 * 60 * 24 * 7 秒）。
+                * token 中包含用户名、密码、过期时间和一个私钥——在写入 cookie 前都进行了 MD5 哈希。
+                * 默认情况下，私钥的名为 SpringSecured，在这里将其设置为 myappKey，使其专用于本应用。
+                */
+                .rememberMe().tokenValiditySeconds(60 * 60 * 24 * 7).key("myappKey")
+
+                .and()
+
+                /*
+                * 退出
+                *
+                * 退出功能是通过 Spring Security 的 LogoutFilter 实现的，
+                * 这个 Filter 会拦截所有对 "/logout" 的请求。
+                * 所以默认情况下，只需要在应用的页面添加对此请求的超链接即可完成退出功能。
+                * 当用户点击这个链接的时候，会发起对 "/logout" 的请求，LogoutFilter 会拦截该请求。
+                * 用户会退出停用，所有的 Remember-me token 都会被清除掉。
+                * 在退出完成后，浏览器将会重定向到 "/login?logout"，从而允许用户再次登录。
+                * 也可以通过调用 logoutSuccessUrl() 指定退出成功后重定向的新页面 URL。
+                */
+                .logout().logoutSuccessUrl("/")// 退出成功后重定向到主页
+
+                .and()
+
+                /*
+                * 启用 HTTP Basic 认证
+                *
+                * 对于应用程序的人类用户来说，基于表单的认证是比较理想的。
+                * 但是当应用程序的使用者是另外一个应用程序的话，使用表单来提示登录的方式就不合适了。
+                * HTTP Basic 认证会直接通过 HTTP 请求本身，对要访问应用程序的用户进行认证。
+                * 当在 Web 浏览器中使用时，它将向用户弹出一个简单的模态对话框。
+                * 但这只是 Web 浏览器的显示方式，本质上这是一个 HTTP 401 响应，
+                * 表明必须要在请求中包含一个用户名和密码，在 REST 客户端向它使用的服务进行认证的场景中比较适合。
+                * 另外，还可以通过调用 realmName() 方法指定域。
+                */
                 .httpBasic();
     }
 

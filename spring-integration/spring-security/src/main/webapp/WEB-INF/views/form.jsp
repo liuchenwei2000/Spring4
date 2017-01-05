@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <base href="${baseUrl}" />
     <title>Add Employee</title>
 </head>
 <body>
@@ -12,10 +13,10 @@
     <p>Password:<input type="password" name="password"/>
     <p>Dept:<input type="text" name="dept"/>
     <p>Salary:<input type="number" min="0" max="99999" name="salary"/>
-    <!-- 下面的域是为了处理 Spring Security 的 CSRF 防护 -->
+        <!-- 下面的域是为了处理 Spring Security 的 CSRF 防护 -->
     <p><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <p>
-    <input type="submit" value="Save"/>
+        <input type="submit" value="Save"/>
 </form>
 </body>
 </html>
