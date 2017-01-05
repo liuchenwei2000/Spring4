@@ -36,3 +36,15 @@ Spring Security 通过一个同步 token 的方式来实现 CSRF 防护的功能
 当为浏览器渲染 HTML 内容时，可能希望视图中能够反映安全限制和相关的信息。一个简单的样例就是渲染用户的基本信息（比如显示"您已经以 *** 身份登录"），或者想根据用户被授予了什么权限，有条件地渲染特定的视图元素。
 
 Spring Security 提供了一个 JSP 标签库，在视图层上支持安全性。详见 WEB-INF/views/employee.jsp。
+
+### 保护方法调用
+
+Spring Security 保护应用的 Web 层时能阻止用户访问没有权限的内容，但是，如果 Web 层出现安全漏洞，用户就可以请求他们不允许访问的内容了。使用 Spring Security 还能够保护 Web 层后面的 bean 方法，通过这种方式，就能声明安全规则，保证如果用户没有执行方法的权限，就不会调用相应的方法。
+
+实现方法级安全性最常见的办法是使用特定的注解，将这些注解应用到需要保护的方法上。Spring Security 提供了三种不同的安全注解：
+
+* Spring Security 自带的 @Secured 注解
+* JSR-250 的 @RolesAllowed 注解
+* 表达式驱动的注解，包括 @PreAuthorize、@PostAuthorize、@PreFilter 和 @PostFilter。
+
+具体使用详见 myapp.dao.EmployeeRepositoryImpl 类。

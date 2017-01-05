@@ -25,7 +25,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 如果想要指定 Web 安全的细节，要通过重载下面三个 configure() 方法来实现。

@@ -4,11 +4,13 @@ import myapp.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +34,6 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         return npJdbcTemplate.queryForObject(sql, parameters, new EmployeeRowMapper());
     }
 
-    @Override
     public Employee findById(String id) {
         String sql = "select id, code, name, password, dept, salary from myapp_employee where id=:id";
 
@@ -59,6 +60,26 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
         npJdbcTemplate.update(sql, parameters);
 
         return id;
+    }
+
+    /**
+     * 使用注解保护方法
+     * <p>
+     *     &nbsp;@Secured 注解会使用一个 String 数组作为参数，
+     *     每个 String 值是一个权限，调用这个方法至少需要具备其中的一个权限。
+     * <p>
+     *     如果方法被没有认证的用户或者所需权限的用户调用，保护这个方法的切面将抛出异常。
+     *     可能是 Spring Security 的 AuthenticationException 或 AccessDeniedException 的子类。
+     *     它们是非受查异常，但这个异常最终必须要被捕获和处理。
+     *     如果被保护的方法是在 Web 请求中调用的，这个异常会被 Spring Security 的过滤器自动处理。
+     *     否则的话，就需要编码来处理这个异常。
+     */
+    @Secured("ROLE_ADMIN")
+//    @RolesAllowed("ROLE_ADMIN")
+    public List<Employee> findAll() {
+        String sql = "select id, code, name, password, dept, salary from myapp_employee";
+
+        return npJdbcTemplate.query(sql, new EmployeeRowMapper());
     }
 
     private static final class EmployeeRowMapper implements RowMapper<Employee> {

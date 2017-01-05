@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 /**
  * EmployeeController
  * <p>
@@ -52,5 +54,13 @@ public class EmployeeController {
     public String save(Employee employee) {
         String id = employeeRepository.save(employee);
         return "redirect:/employee/" + id;
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public String all(Model model) {
+        List<Employee> employees = employeeRepository.findAll();
+
+        model.addAttribute("employees", employees);
+        return "employeeList";
     }
 }

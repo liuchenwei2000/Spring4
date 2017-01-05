@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             // 创建权限列表
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_EMPLOYEE"));
-            // 根据不同的 Employee 为其授予不同的权限
+            // 根据不同的 Employee 为其授予不同的权限，这里可以根据应用的权限模型进行处理
             if ("admin".equalsIgnoreCase(employee.getCode())) {
                 authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             }
