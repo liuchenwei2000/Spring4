@@ -14,11 +14,12 @@ import org.springframework.security.config.annotation.method.configuration.Globa
  *     这样的话，Spring Security 切面就会包装带有 @RolesAllowed 注解的方法。
  *     基本上 @Secured 注解 和 @RolesAllowed 注解在各个方面都是一致的，
  *     只不过前者是 Spring 特有的，后者是 JSR-250 定义的，这两者可以同时启用。
+ *     注解的 prePostEnabled 属性为 true 则会启用方法调用前后的表达式驱动注解。
  * <p>
  * Created by liuchenwei on 2017/1/5.
  */
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 // 继承自 GlobalMethodSecurityConfiguration 类是能够为方法级别的安全性提供更精细的配置
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 }

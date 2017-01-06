@@ -47,4 +47,11 @@ Spring Security 保护应用的 Web 层时能阻止用户访问没有权限的�
 * JSR-250 的 @RolesAllowed 注解
 * 表达式驱动的注解，包括 @PreAuthorize、@PostAuthorize、@PreFilter 和 @PostFilter。
 
-具体使用详见 myapp.dao.EmployeeRepositoryImpl 类。
+Spring Security 3.0 引入了几个新注解，它们使用 SpEL 能够在方法调用上实现更灵活的安全性约束。这些注解的值参数中都可以接受一个任意合法的 SpEL 表达式。如果表达式的计算结果为 true，那么安全规则通过，否则就会失败。安全规则通过或失败的结果会因为所使用注解的差异而有所不同。
+
+* @PreAuthorize 在方法调用之前，基于表达式的计算结果来限制对方法的访问
+* @PostAuthorize 允许方法调用，但如果表达式计算结果为 true 则抛出一个安全异常
+* @PreFilter 允许方法调用，但必须在进入方法之前过滤输入值
+* @PostFilter 允许方法调用，但必须按照表达式来过滤方法的结果
+
+前两类注解具体使用详见 myapp.dao.EmployeeRepositoryImpl 类，表达式驱动的注解具体使用详见 myapp.dao.MessageRepositoryImpl 类。

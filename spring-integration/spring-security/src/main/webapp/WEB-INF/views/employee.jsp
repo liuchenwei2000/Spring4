@@ -46,6 +46,19 @@
         </security:authorize>
 
     <p>
+
+    <p>
+    <form action="message" method="POST">
+        <input type="text" name="message"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit" value="Send"/>
+    </form>
+    <p>
+        <a href="message">已发消息</a>
+    <p>
+    <p>
+        <a href="message/all">所有消息</a>
+    <p>
 <!--
 如果开启了 CSRF 防护的话，只能使用 POST 的方式进行 logout 请求。
 如果禁用了 CSRF 防护的话，则可以使用 GET 的方式进行 logout 请求，即超链接形式即可。
@@ -54,5 +67,6 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="submit" value="Logout"/>
 </form>
+    <a href="${baseurl}">Home Page</a>
 </body>
 </html>
