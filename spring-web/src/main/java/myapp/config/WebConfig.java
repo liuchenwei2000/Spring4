@@ -11,10 +11,7 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.io.IOException;
@@ -44,6 +41,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // books/detail 将会解析为 /WEB-INF/views/books/detail.jsp
         // 当逻辑视图名中包含斜线时，这个斜线也会带到资源的路径名中。
         return resolver;
+    }
+
+    /**
+     * 添加视图控制器
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        // 如果只是想建立 URL 和逻辑视图之间的映射，不经过 Controller 处理直接跳转到页面上，
+        // 可以采用下面的便捷方式，它将对 /hello 的访问直接跳转到 hello.jsp 上。
+        // 需要注意的是，对逻辑视图名的解析，依然需要 ViewResolver 来处理。
+        registry.addViewController("/hello").setViewName("hello");
     }
 
     /**

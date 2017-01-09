@@ -12,6 +12,8 @@ Welcome to SpringMVC
 <p>
     <a href="books">/books</a>
 <p>
+    <a href="hello">/hello</a>
+<p>
     <a href="users?total=3">/users?total=3</a>
 <p>
     <a href="user/12345">/user/12345</a>
