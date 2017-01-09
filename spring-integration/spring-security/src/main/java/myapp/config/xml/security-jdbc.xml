@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 基于数据库进行认证 -->
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/security 
+        http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+                        
+    <jdbc-user-service id="userService"
+       data-source-ref="dataSource"
+       users-by-username-query=
+          "select username,password,true from myapp_user where username=?"
+       authorities-by-username-query=
+          "select username,'ROLE_USER' from myapp_role where username=?" />
+
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <beans:property name="url" value="jdbc:mysql://localhost:3306/test" />
+        <beans:property name="username" value="root" />
+        <beans:property name="password" value="woailo99" />
+    </beans:bean>
+</beans:beans>

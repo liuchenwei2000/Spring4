@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Spring Security 提供了安全性相关的命名空间，极大简化了 Spring 中的安全性配置。
+要使用安全性命名空间，唯一要做的事情就是将命名空间声明添加到 XML 文件中。
+在将安全性命名空间作为首要命名空间之后，就可以避免为所有元素添加 "security:" 前缀了。
+-->
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns="http://www.springframework.org/schema/security"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!--
+    通过设置自动配置（auto-config 属性值为 true），应用可以获得一个额外的登录页、
+    HTTP 基本认证和退出功能。use-expressions 属性为 true 表示可以使用 SpEL 语言。
+    -->
+	<http auto-config="true" use-expressions="true">
+		<!--
+		1，设置自定义的登录页
+
+		login-page 属性为登录页声明了一个新的且相对于上下文的 URL（/login）。
+		这个 URL 最终由一个 Spring MVC 控制器来进行处理。同样，如果认证失败，
+		通过设置 authentication-failure-url 属性，就会把用户重定向到相同的登录页。
+		login-processing-url 属性设置的是登录表单提交回来进行用户认证的 URL。
+		-->
+		<form-login login-page="/login"
+					login-processing-url="/static/j_spring_security_check"
+					authentication-failure-url="/login"/>
+
+		<!--
+		2，退出
+
+		logout 元素会构建一个 Spring Security 功率器，这个过滤器用于使用户的会话失效。
+		logout-url 属性用于设置退出功能的 URL。
+		-->
+		<logout logout-url="/static/j_spring_security_logout"/>
+
+		<!--
+		3，拦截请求
+
+		intercept-url 元素是实现请求级别安全的第一道防线，它的 pattern 属性第一了对传入请求要进行匹配的 URL 模式。
+		如果请求匹配这个模式的话，intercept-url 的安全规则（access 属性定义的）就会启用。
+		-->
+		<intercept-url pattern="/favicon.ico" access="permitAll" />
+		<intercept-url pattern="/employee/me" access="isAuthenticated()"/>
+		<intercept-url pattern="/employee/save" method="POST" access="hasRole('ROLE_ADMIn')"/>
+		<intercept-url pattern="/admin/**"
+					   access="isAuthenticated() and principal.username=='admin'"/>
+		<!-- requires-channel 属性用于将请求重定向到 HTTPS 上。 -->
+		<intercept-url pattern="/employee/register" requires-channel="https"/>
+		<!-- 启用 remember-me 功能 -->
+		<remember-me key="myappKey" token-validity-seconds="2419200" />
+
+	</http>
+
+	<!-- 将用户服务装配到 Spring Security 的认证管理器中供其查找用户详细信息。 -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userService" />
+	</authentication-manager>
+
+	<!-- 引入用户服务配置文件 -->
+	<beans:import resource="security-jdbc.xml"/>
+
+	<!-- 启用对方法调用的保护 -->
+	<global-method-security secured-annotations="enabled" />
+</beans:beans>
