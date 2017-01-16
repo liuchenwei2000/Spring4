@@ -31,5 +31,11 @@ Welcome to SpringMVC
     <a href="pet/delete2/12345">/pet/delete2/12345</a>
 <p>
     <a href="pet/save?name=micky">/pet/save?name=micky</a>
+<p>
+    <a href="download/a">Download file via servlet response</a>
+<p>
+    <a href="download/b">Download file via http entity</a>
+<p>
+    <a href="download/c">Download file via file system resource</a>
 </body>
 </html>
