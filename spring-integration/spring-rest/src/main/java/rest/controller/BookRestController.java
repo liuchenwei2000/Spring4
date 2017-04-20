@@ -12,8 +12,8 @@ import java.util.List;
  * 为控制器默认设置消息转换
  * <p>
  *     如果在控制器类上使用 @RestController 注解来代替 @Controller 的话，
- *     Spring 将会为该控制器的所有处理方法应用消息转换功能，而不必为每个方法都添加
- *     @ResponseBody 或 @RequestBody 注解了。
+ *     Spring 将会为该控制器的所有处理方法应用消息转换功能，
+ *     而不必为每个方法都添加 @ResponseBody 注解了。
  * <p>
  * Created by liuchenwei on 2016/12/15.
  */
@@ -32,7 +32,7 @@ public class BookRestController {
 
 	@RequestMapping(value = "/book", method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Book addBook(Book book) {
+	public Book addBook(@RequestBody Book book) {
 		return bookRepository.save(book);
 	}
 }
