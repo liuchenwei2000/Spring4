@@ -22,6 +22,7 @@ public class RestClient4Get {
 
     public static void main(String[] args) {
         String url = "http://localhost:8080/spring-rest/api/book/{id}";
+//        String url = "http://localhost:8080/spring-rest/api/book?id={id}";
         String bookId = "21234";
 
         /** getForObject() 示例 */
