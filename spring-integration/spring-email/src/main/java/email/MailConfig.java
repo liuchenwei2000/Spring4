@@ -98,7 +98,7 @@ public class MailConfig {
     @Bean
     public FreeMarkerConfigurationFactoryBean freeMarkerConfiguration() {
         FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
-        bean.setTemplateLoaderPath("/templates/");
+        bean.setTemplateLoaderPath("classpath:templates/");
         return bean;
     }
 }
