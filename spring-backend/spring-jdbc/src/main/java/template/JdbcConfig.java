@@ -5,7 +5,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -17,6 +19,8 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan
+// 启用事务管理功能
+@EnableTransactionManagement
 public class JdbcConfig {
 
     /**
@@ -35,7 +39,7 @@ public class JdbcConfig {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
@@ -43,5 +47,15 @@ public class JdbcConfig {
         ds.setUsername("root");
         ds.setPassword("woailo99");
         return ds;
+    }
+
+    /**
+     * 事务管理器配置
+     */
+    @Bean
+    public DataSourceTransactionManager transactionManager(DataSource dataSource) {
+        DataSourceTransactionManager txManager = new DataSourceTransactionManager();
+        txManager.setDataSource(dataSource);
+        return txManager;
     }
 }

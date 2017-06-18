@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  *     <li>@ModelAttribute 注解标注的方法
  *<p>
  *     在带有 @ControllerAdvice 注解的类中，上述的这些方法会被运用到整个应用程序
- *     所有的控制中带有 @RequestMapping 注解的方法上。
+ *     所有的控制器中带有 @RequestMapping 注解的方法上。
  *     @ControllerAdvice 注解本身已经使用了 @Component，所以它会被自动扫描成组件。
  * <p>
  * Created by liuchenwei on 2016/12/9.
