@@ -11,6 +11,9 @@
         <module>spring-orm</module>
 		<module>spring-nosql</module>
 		<module>spring-cache</module>
+        <module>spring-event</module>
+        <module>spring-concurrent</module>
+        <module>spring-schedule</module>
     </modules>
 	
     <build>
