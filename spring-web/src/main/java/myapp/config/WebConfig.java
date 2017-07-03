@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -25,6 +26,7 @@ import java.io.IOException;
  */
 @Configuration
 @EnableWebMvc
+@EnableScheduling
 @ComponentScan("myapp.controller")// 启用组件扫描
 public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -52,6 +54,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         // 可以采用下面的便捷方式，它将对 /hello 的访问直接跳转到 hello.jsp 上。
         // 需要注意的是，对逻辑视图名的解析，依然需要 ViewResolver 来处理。
         registry.addViewController("/hello").setViewName("hello");
+        registry.addViewController("/sse").setViewName("sse");
+        registry.addViewController("/async").setViewName("async");
     }
 
     /**
@@ -65,6 +69,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     /**
+     * 配置资源的处理
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // addResourceLocations 指的是文件放置的目录，addResourceHandler 指的是对外暴露的访问路径。
+        registry.addResourceHandler("/res/**").addResourceLocations("classpath:/images/");
+    }
+
+    /**
      * 添加 Interceptor 拦截器
      */
     @Override
@@ -73,7 +86,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new BaseUrlInterceptor()).addPathPatterns("/**");
         // 设置拦截器匹配的模式及排除的模式（可以指定多个）
         registry.addInterceptor(new TimeCostInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/", "/js/**", "/css/**", "/images/**");
+                .excludePathPatterns("/", "/js/**", "/css/**", "/image/**");
     }
 
     /**

@@ -72,6 +72,8 @@ public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServl
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         // 设置 load-on-startup 优先级
         registration.setLoadOnStartup(1);
+        // 开启异步方法支持
+        registration.setAsyncSupported(true);
         // 设置初始化参数
         registration.setInitParameter("myparam", "Hello");
 

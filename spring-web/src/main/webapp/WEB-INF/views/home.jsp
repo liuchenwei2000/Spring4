@@ -37,5 +37,9 @@ Welcome to SpringMVC
     <a href="download/b">Download file via http entity</a>
 <p>
     <a href="download/c">Download file via file system resource</a>
+<p>
+    <a href="sse">/sse</a>
+<p>
+    <a href="async">/async</a>
 </body>
 </html>
