@@ -35,7 +35,7 @@ public class RootConfig {
     public static class WebPackage extends RegexPatternTypeFilter {
 
         public WebPackage() {
-            super(Pattern.compile("myapp\\.controller"));
+            super(Pattern.compile("myapp\\.controller\\..*"));
         }
     }
 
