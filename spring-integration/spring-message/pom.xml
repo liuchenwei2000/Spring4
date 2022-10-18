@@ -13,7 +13,7 @@
     </parent>
 
     <properties>
-        <jackson.version>2.8.4</jackson.version>
+        <jackson.version>2.13.4.1</jackson.version>
         <amqp.version>1.6.1.RELEASE</amqp.version>
     </properties>
 
